@@ -5,6 +5,7 @@ import com.tw.apistackbase.core.Employee;
 import com.tw.apistackbase.core.Profile;
 import com.tw.apistackbase.repo.CompanyRepo;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -52,6 +53,22 @@ public class ApiStackBaseApplicationTests {
 		System.out.println(company1);
 		List<Company> all = companyRepo.findAll();
 		System.out.println(all);
+	}
+
+	@Test
+	public void test_all() {
+		Company company = new Company("acompany");
+		Employee employee = new Employee("John", 23);
+		Employee employee1 = new Employee("Bill", 53);
+		company.setEmployees(Arrays.asList(employee, employee1));
+
+		Profile companyProfile = new Profile();
+		companyProfile.setRegisteredCapital(500000);
+		companyProfile.setCertId("3XXXXX");
+		company.setProfile(companyProfile);
+
+		Company result = companyRepo.saveAndFlush(company);
+		Assertions.assertSame(2, result.getEmployees().size());
 	}
 
 }
